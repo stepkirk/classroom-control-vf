@@ -44,8 +44,14 @@ node default {
   #   class { 'my_class': }
   notify { "Hello, my name is ${::hostname}": }
   file { '/etc/motd': 
+    noop => true,
     ensure => file,
     owner => root,
     content => "Bassets are the best.\n",
+  }
+  
+  exec { "cowsay 'Welcome to ${::fqdn}!' > /etc/motd":
+    path => '/usr/local/bin',
+    creates => '/etc/motd',
   }
 }
