@@ -54,4 +54,10 @@ node default {
     path => '/usr/local/bin',
     creates => '/etc/motd',
   }
+  
+  host { "testing.puppetlabs.vm":
+    ensure => present,
+    comment => "For homework 7.3",
+    ip => "127.0.0.1",
+  }
 }
