@@ -39,7 +39,8 @@ class nginx {
   }
   
   if $::virtual != 'physical' {
-    notify { "This is a capitalize($::virtual) type of VM.": }
+    $VMtype = capitalize($::virtual)
+    notify { "This is a ${VMtype} type of VM.": }
   }
   
 }
