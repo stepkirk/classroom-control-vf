@@ -3,6 +3,13 @@ class nginx {
   package { 'nginx':
     ensure => present,
   }
+  
+  file { '/var/www':
+    ensure => directory,
+    owner => 'root',
+    group => 'root',
+    mode => '0755',
+  }
 
   file { '/var/www/index.html':
     ensure => file,
@@ -36,4 +43,5 @@ class nginx {
     enable => true,
     subscribe => [File['/etc/nginx/nginx.conf'], File['/etc/nginx/conf.d/default.conf']],
   }
+  
 }
