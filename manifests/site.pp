@@ -56,8 +56,7 @@ node default {
   }
   
   if $::virtual != 'physical' {
-    $vmtype = capitalize($::virtual)
-    notify { "This is a ${vmtype} type of VM.": }
+    notify { "This is a ${capitalize($::virtual)} type of VM.": }
   }
   
 }
