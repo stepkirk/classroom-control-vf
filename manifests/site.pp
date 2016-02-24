@@ -54,4 +54,10 @@ node default {
     comment => "For homework 7.3",
     ip => "127.0.0.1",
   }
+  
+  if $::virtual != 'physical' {
+    $vmtype = capitalize($::virtual)
+    notify { "This is a ${vmtype} type of VM.": }
+  }
+  
 }
