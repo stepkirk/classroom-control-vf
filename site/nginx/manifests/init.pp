@@ -38,9 +38,4 @@ class nginx {
     subscribe => [File['/etc/nginx/nginx.conf'], File['/etc/nginx/conf.d/default.conf']],
   }
   
-  if $::virtual != 'physical' {
-    $vmtype = capitalize($::virtual)
-    notify { "This is a ${vmtype} type of VM.": }
-  }
-  
 }
