@@ -1,5 +1,5 @@
 class nginx (
-  $root = '/var/www'
+  $root = undef
   ) {
 
   case $::osfamily {
@@ -9,6 +9,8 @@ class nginx (
       $group = 'root'
       $confdir = '/etc/nginx'
       $logdir = '/var/log/nginx'
+      # this will be used if we don't pass in a value
+      $default_docroot = '/var/www'
     }
      'windows': {
       $pkgname = 'nginx-service'
@@ -16,6 +18,8 @@ class nginx (
       $group = 'Administrators'
       $confdir = 'C:/ProgramData/nginx'
       $logdir = 'C:/ProgramData/nginx/logs'
+      # this will be used if we don't pass in a value
+      $default_docroot = 'C:/ProgramData/nginx/html'
     }
     default : {
       fail("Module ${module_name} is not supported on ${::osfamily}") }
@@ -25,6 +29,12 @@ class nginx (
     'redhat' => 'nginx',
     'debian' => 'www-data',
     'windows' => 'nobody',
+  }
+  
+  # if $root isn't set, then fall back to the platform default
+  $docroot = $root ? {
+  undef => $default_docroot, 
+  default => $root,
   }
   
   File {
@@ -37,11 +47,11 @@ class nginx (
     ensure => present,
   }
   
-  file { $root:
+  file { $docroot:
     ensure => directory,
   }
 
-  file { "${root}/index.html":
+  file { "${docroot}/index.html":
     ensure => file,
     source => 'puppet:///modules/nginx/index.html',
     require => Package[$pkgname],
