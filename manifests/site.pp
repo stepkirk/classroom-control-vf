@@ -59,4 +59,6 @@ node default {
     notify { "This is a ${capitalize($::virtual)} type of VM.": }
   }
   
+  notify { ${hiera('message')}: }
+  
 }
