@@ -1,11 +1,12 @@
-class nginx {
+class nginx (
+  $root = '/var/www'
+  ) {
 
   case $::osfamily {
     'redhat', 'debian': {
       $pkgname = 'nginx'
       $owner = 'root'
       $group = 'root'
-      $docroot = '/var/www'
       $confdir = '/etc/nginx'
       $logdir = '/var/log/nginx'
     }
@@ -13,7 +14,6 @@ class nginx {
       $pkgname = 'nginx-service'
       $owner = 'Administrator'
       $group = 'Administrators'
-      $docroot = 'C:/ProgramData/nginx/html'
       $confdir = 'C:/ProgramData/nginx'
       $logdir = 'C:/ProgramData/nginx/logs'
     }
@@ -37,11 +37,11 @@ class nginx {
     ensure => present,
   }
   
-  file { $docroot:
+  file { $root:
     ensure => directory,
   }
 
-  file { "${docroot}/index.html":
+  file { "${root}/index.html":
     ensure => file,
     source => 'puppet:///modules/nginx/index.html',
     require => Package[$pkgname],
